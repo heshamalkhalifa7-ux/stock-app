@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برنامج محاسبي - مكتبة الخليفة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffecd2, #fcb69f);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #d35400;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #999;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f39c12;
+            color: white;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+        }
+        input {
+            width: calc(100% - 22px);
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #27ae60;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>📊 برنامج محاسبي - مكتبة الخليفة</h1>
+
+    <div>
+        <input type="text" id="item" placeholder="اسم المنتج">
+        <input type="number" id="price" placeholder="السعر">
+        <input type="number" id="qty" placeholder="الكمية">
+        <button onclick="addItem()">➕ إضافة</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>اسم المنتج</th>
+                <th>السعر</th>
+                <th>الكمية</th>
+                <th>الإجمالي</th>
+                <th>حذف</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+
+    <h2>💰 المجموع الكلي: <span id="total">0</span> جنيه</h2>
+
+    <script>
+        let total = 0;
+
+        function addItem() {
+            let item = document.getElementById("item").value;
+            let price = parseFloat(document.getElementById("price").value);
+            let qty = parseInt(document.getElementById("qty").value);
+
+            if (!item || isNaN(price) || isNaN(qty)) {
+                alert("⚠️ من فضلك أدخل بيانات صحيحة");
+                return;
+            }
+
+            let table = document.getElementById("table-body");
+            let row = table.insertRow();
+
+            row.insertCell(0).innerText = item;
+            row.insertCell(1).innerText = price.toFixed(2);
+            row.insertCell(2).innerText = qty;
+            row.insertCell(3).innerText = (price * qty).toFixed(2);
+
+            let deleteCell = row.insertCell(4);
+            let btn = document.createElement("button");
+            btn.innerText = "❌";
+            btn.onclick = function () {
+                total -= price * qty;
+                document.getElementById("total").innerText = total.toFixed(2);
+                row.remove();
+            };
+            deleteCell.appendChild(btn);
+
+            total += price * qty;
+            document.getElementById("total").innerText = total.toFixed(2);
+
+            document.getElementById("item").value = "";
+            document.getElementById("price").value = "";
+            document.getElementById("qty").value = "";
+        }
+    </script>
+
+</body>
+</html>
